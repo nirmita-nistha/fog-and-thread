@@ -353,9 +353,47 @@
         }
       }
 
-      document.getElementById('formArea').style.display = 'none';
-      document.getElementById('successMsg').classList.add('visible');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // gather form data and send to formspree
+      var formData = new FormData();
+      formData.append('type', currentKind);
+      formData.append('title', title);
+      formData.append('email', email);
+      formData.append('name', document.getElementById('nameInput').value.trim());
+      formData.append('anonymous', document.getElementById('anonBox').classList.contains('checked') ? 'yes' : 'no');
+
+      if (currentKind === 'writing') {
+        formData.append('piece', document.getElementById('writingInput').value.trim());
+      }
+      if (currentKind === 'photo') {
+        formData.append('file', document.getElementById('photoInput').files[0]);
+      }
+      if (currentKind === 'visual') {
+        formData.append('file', document.getElementById('visualInput').files[0]);
+      }
+
+      var btn = document.querySelector('.submit-btn');
+      btn.textContent = 'sending...';
+      btn.style.opacity = '0.6';
+
+      fetch('https://formspree.io/f/xojkndba', {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      }).then(function(response) {
+        if (response.ok) {
+          document.getElementById('formArea').style.display = 'none';
+          document.getElementById('successMsg').classList.add('visible');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          showError('Something went wrong. Please try again.');
+          btn.textContent = 'leave your thread';
+          btn.style.opacity = '1';
+        }
+      }).catch(function() {
+        showError('Something went wrong. Please check your connection and try again.');
+        btn.textContent = 'leave your thread';
+        btn.style.opacity = '1';
+      });
     }
   </script>
 

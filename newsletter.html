@@ -328,8 +328,37 @@
         return;
       }
 
-      document.getElementById('signupArea').style.display = 'none';
-      document.getElementById('signupSuccess').classList.add('visible');
+      var btn = document.querySelector('.signup-btn');
+      btn.textContent = 'sending...';
+      btn.style.opacity = '0.6';
+
+      fetch('https://formspree.io/f/xojkndba', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          type: 'newsletter signup'
+        })
+      }).then(function(response) {
+        if (response.ok) {
+          document.getElementById('signupArea').style.display = 'none';
+          document.getElementById('signupSuccess').classList.add('visible');
+        } else {
+          err.textContent = '✦ something went wrong. please try again.';
+          err.classList.add('visible');
+          btn.textContent = 'receive the letter';
+          btn.style.opacity = '1';
+        }
+      }).catch(function() {
+        err.textContent = '✦ something went wrong. please check your connection.';
+        err.classList.add('visible');
+        btn.textContent = 'receive the letter';
+        btn.style.opacity = '1';
+      });
     }
   </script>
 
