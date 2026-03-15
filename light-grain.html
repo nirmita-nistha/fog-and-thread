@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Light & Grain — Fog & Thread</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Upright:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    body { padding-top: 56px; background: #0A1510; }
+
+    .film-page { padding: 0 0 80px; }
+
+    .film-roll-outer {
+      position: relative;
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      cursor: grab;
+      user-select: none;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .film-roll-outer::-webkit-scrollbar { display: none; }
+    .film-roll-outer:active { cursor: grabbing; }
+
+    .film-strip {
+      display: flex;
+      flex-direction: column;
+      background: #0D1F14;
+      border-top: 2px solid #162A1C;
+      border-bottom: 2px solid #162A1C;
+      padding: 12px 0;
+      width: max-content;
+    }
+
+    .sprockets {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      height: 18px;
+      margin-bottom: 10px;
+    }
+    .sprocket {
+      width: 14px;
+      height: 10px;
+      background: #0A1510;
+      border: 1px solid #1E3A24;
+      border-radius: 2px;
+      margin-right: 28px;
+      flex-shrink: 0;
+    }
+
+    .frames-row {
+      display: flex;
+      gap: 6px;
+      padding: 0 20px;
+    }
+
+    .sprockets-bottom { margin-top: 10px; margin-bottom: 0; }
+
+    .film-frame {
+      position: relative;
+      width: 240px;
+      height: 200px;
+      flex-shrink: 0;
+      background: #081008;
+      border: 1px solid #1E3A24;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      cursor: pointer;
+    }
+    .film-frame:hover {
+      transform: scale(1.03);
+      border-color: #4A6A4A;
+      z-index: 2;
+    }
+
+    .film-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: sepia(20%) contrast(1.05) brightness(0.8) saturate(0.85);
+      transition: filter 0.4s ease;
+    }
+    .film-frame:hover img {
+      filter: sepia(10%) contrast(1.08) brightness(0.95) saturate(0.95);
+    }
+
+    .frame-number {
+      position: absolute;
+      top: 6px; left: 8px;
+      font-family: 'Caveat', cursive;
+      font-size: 11px;
+      color: #4A6A4A;
+      z-index: 3;
+      letter-spacing: 0.08em;
+    }
+
+    .frame-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 24px 12px 10px;
+      background: linear-gradient(to top, rgba(8,16,8,0.95) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 3;
+    }
+    .film-frame:hover .frame-caption { opacity: 1; }
+    .frame-caption-text {
+      font-family: 'Caveat', cursive;
+      font-size: 13px;
+      color: #C4B49A;
+      line-height: 1.4;
+    }
+
+    .frame-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #0A1510;
+    }
+    .frame-placeholder-text {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: #6A8A6A;
+      font-style: italic;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .frame-submit {
+      border-style: dashed;
+      border-color: #2A4A2A;
+    }
+    .frame-submit:hover { border-color: #8A9E7A; }
+    .frame-submit .frame-placeholder-text { color: #4A6A4A; }
+
+    .film-label {
+      font-family: 'Caveat', cursive;
+      font-size: 11px;
+      color: #2A4A2A;
+      letter-spacing: 0.1em;
+      text-align: center;
+      margin-top: 16px;
+      padding: 0 32px;
+    }
+
+    .scroll-hint-film {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 24px;
+      padding: 0 32px;
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #2A4A2A;
+      font-style: italic;
+    }
+    .scroll-arrow {
+      font-size: 14px;
+      animation: nudge 1.8s ease-in-out infinite;
+    }
+    @keyframes nudge {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(6px); }
+    }
+
+    .submit-nudge {
+      text-align: center;
+      margin-top: 36px;
+      padding: 0 32px;
+      font-family: 'Cormorant Upright', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: #4A6A4A;
+      line-height: 1.8;
+    }
+    .submit-nudge a {
+      color: #8A9E7A;
+      text-decoration: none;
+      border-bottom: 0.5px solid #4A6A4A;
+      padding-bottom: 1px;
+      transition: color 0.2s;
+    }
+    .submit-nudge a:hover { color: #F7F2E8; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">Fog & Thread</a>
+    <div class="nav-links">
+      <a href="threadbare.html">Threadbare</a>
+      <a href="loose-leaves.html">Loose Leaves</a>
+      <a href="light-grain.html">Light & Grain</a>
+      <a href="submit.html">Add Your Thread</a>
+      <a href="newsletter.html">Letters from the Fog</a>
+      <a href="about.html">Behind the Fog</a>
+    </div>
+  </nav>
+
+  <div class="film-page">
+
+    <div class="page-header">
+      <span class="page-tag">✦ frames from the fog ✦</span>
+      <h1 class="page-title">Light & Grain</h1>
+      <p class="page-desc">photographs from here and elsewhere — drag to explore the roll</p>
+    </div>
+
+    <div class="page-divider">
+      <div class="page-divider-line"></div>
+      <span class="page-divider-ornament">✦</span>
+      <div class="page-divider-line"></div>
+    </div>
+
+    <div class="film-roll-outer" id="filmOuter">
+      <div class="film-strip">
+
+        <div class="sprockets" id="sprocketsTop"></div>
+
+        <div class="frames-row">
+
+          <!-- Frame 1 — Jurong Lake -->
+          <div class="film-frame">
+            <span class="frame-number">01</span>
+            <img src="images/lake.jpg" alt="Jurong Lake" />
+            <div class="frame-caption">
+              <p class="frame-caption-text">Jurong Lake, February 2026</p>
+            </div>
+          </div>
+
+          <!-- Placeholders -->
+          <div class="film-frame">
+            <span class="frame-number">02</span>
+            <div class="frame-placeholder">
+              <p class="frame-placeholder-text">more frames<br>developing</p>
+            </div>
+          </div>
+
+          <div class="film-frame">
+            <span class="frame-number">03</span>
+            <div class="frame-placeholder">
+              <p class="frame-placeholder-text">more frames<br>developing</p>
+            </div>
+          </div>
+
+          <div class="film-frame">
+            <span class="frame-number">04</span>
+            <div class="frame-placeholder">
+              <p class="frame-placeholder-text">more frames<br>developing</p>
+            </div>
+          </div>
+
+          <!-- Submit frame -->
+          <div class="film-frame frame-submit" onclick="window.location.href='submit.html'">
+            <span class="frame-number">—</span>
+            <div class="frame-placeholder">
+              <p class="frame-placeholder-text" style="color:#4A6A4A;">submit<br>your frame →</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="sprockets sprockets-bottom" id="sprocketsBottom"></div>
+
+      </div>
+    </div>
+
+    <p class="film-label">FOG & THREAD — LIGHT & GRAIN — ISO 400 — 35mm</p>
+
+    <div class="scroll-hint-film">
+      <span>drag to explore</span>
+      <span class="scroll-arrow">→</span>
+    </div>
+
+    <p class="submit-nudge">
+      shot something worth keeping? &nbsp;<a href="submit.html">develop your frame →</a>
+    </p>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <h2 class="footer-title">Fog & Thread</h2>
+      <p class="footer-tagline">when the fog confuses you, the thread guides you home</p>
+      <nav class="footer-nav">
+        <a href="threadbare.html">Threadbare</a>
+        <a href="loose-leaves.html">Loose Leaves</a>
+        <a href="light-grain.html">Light & Grain</a>
+        <a href="submit.html">Add Your Thread</a>
+        <a href="newsletter.html">Letters from the Fog</a>
+        <a href="about.html">Behind the Fog</a>
+      </nav>
+      <p class="footer-credit">founded by Nistha, 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    function makeSprockets(id, count) {
+      const row = document.getElementById(id);
+      if (!row) return;
+      for (let i = 0; i < count; i++) {
+        const s = document.createElement('div');
+        s.className = 'sprocket';
+        row.appendChild(s);
+      }
+    }
+    makeSprockets('sprocketsTop', 22);
+    makeSprockets('sprocketsBottom', 22);
+
+    const outer = document.getElementById('filmOuter');
+    let isDragging = false, startX, scrollLeft;
+
+    outer.addEventListener('mousedown', e => {
+      isDragging = true;
+      startX = e.pageX - outer.offsetLeft;
+      scrollLeft = outer.scrollLeft;
+      outer.style.cursor = 'grabbing';
+    });
+    outer.addEventListener('mouseleave', () => { isDragging = false; outer.style.cursor = 'grab'; });
+    outer.addEventListener('mouseup', () => { isDragging = false; outer.style.cursor = 'grab'; });
+    outer.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - outer.offsetLeft;
+      outer.scrollLeft = scrollLeft - (x - startX) * 1.4;
+    });
+
+    outer.addEventListener('touchstart', e => {
+      startX = e.touches[0].pageX - outer.offsetLeft;
+      scrollLeft = outer.scrollLeft;
+    });
+    outer.addEventListener('touchmove', e => {
+      const x = e.touches[0].pageX - outer.offsetLeft;
+      outer.scrollLeft = scrollLeft - (x - startX) * 1.2;
+    });
+  </script>
+
+</body>
+</html>

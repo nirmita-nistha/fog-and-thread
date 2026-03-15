@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Letters from the Fog — Fog & Thread</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Upright:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    body { padding-top: 56px; background: #0E1A12; }
+    .newsletter-page { padding: 0 0 80px; }
+
+    .letters-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: start;
+      padding: 0 32px;
+    }
+
+    /* envelope */
+    .envelope-wrap {
+      position: relative;
+      margin-bottom: 36px;
+      cursor: pointer;
+    }
+    .envelope {
+      background: #F5EDD8;
+      border: 0.5px solid #D8C89A;
+      padding: 32px 28px;
+      position: relative;
+      border-radius: 2px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3);
+      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s ease;
+      overflow: hidden;
+    }
+    .envelope:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .envelope::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 50%;
+      background: #EDE5CC;
+      clip-path: polygon(0 0, 100% 0, 50% 60%);
+      border-bottom: 0.5px solid #D8C89A;
+      z-index: 1;
+    }
+    .wax-seal {
+      position: absolute;
+      top: 28%; left: 50%;
+      transform: translateX(-50%);
+      width: 36px; height: 36px;
+      background: #8A4A2A;
+      border-radius: 50%;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .wax-seal svg { width: 18px; height: 18px; fill: #F5EDD8; }
+
+    .envelope-content {
+      position: relative;
+      z-index: 0;
+      padding-top: 32px;
+      text-align: center;
+    }
+    .envelope-issue-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: 36px;
+      color: #2E2416;
+      margin-bottom: 4px;
+    }
+    .envelope-issue-label {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #8A7A5A;
+      font-style: italic;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .envelope-preview {
+      font-family: 'Caveat', cursive;
+      font-size: 14px;
+      color: #5A4A32;
+      line-height: 1.7;
+      font-style: italic;
+      border-top: 0.5px dashed #D8C89A;
+      padding-top: 14px;
+      text-align: left;
+    }
+
+    .pitch-text {
+      font-family: 'Caveat', cursive;
+      font-size: 18px;
+      line-height: 1.9;
+      color: #C4B49A;
+      margin-bottom: 20px;
+    }
+    .pitch-text .highlight { font-size: 21px; color: #F7F2E8; display: block; margin-bottom: 4px; }
+
+    .what-inside { border-top: 0.5px dashed #2A4A2A; padding-top: 20px; margin-top: 4px; }
+    .what-inside-label { font-family: 'Cormorant Upright', serif; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #4A6A4A; font-style: italic; margin-bottom: 14px; display: block; }
+    .inside-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .inside-dot { width: 3px; height: 3px; border-radius: 50%; background: #B89A60; margin-top: 10px; flex-shrink: 0; }
+    .inside-text { font-family: 'Cormorant Upright', serif; font-size: 13px; font-style: italic; color: #6A8A6A; line-height: 1.7; }
+
+    /* signup card */
+    .signup-card {
+      background: #0A1510;
+      border: 0.5px solid #1E3A24;
+      padding: 36px 32px;
+      position: relative;
+    }
+    .signup-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 40px; height: 40px;
+      border-top: 1px solid #B89A60;
+      border-left: 1px solid #B89A60;
+      opacity: 0.4;
+    }
+    .signup-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 40px; height: 40px;
+      border-bottom: 1px solid #B89A60;
+      border-right: 1px solid #B89A60;
+      opacity: 0.4;
+    }
+
+    .signup-title { font-family: 'Great Vibes', cursive; font-size: 38px; color: #F7F2E8; margin-bottom: 6px; text-align: center; }
+    .signup-sub { font-family: 'Cormorant Upright', serif; font-size: 12px; letter-spacing: 0.14em; font-style: italic; color: #4A6A4A; text-align: center; margin-bottom: 28px; }
+
+    .signup-field {
+      width: 100%; background: transparent; border: none;
+      border-bottom: 0.5px solid #2A4A2A; padding: 10px 0;
+      font-family: 'Caveat', cursive; font-size: 17px; color: #F7F2E8;
+      outline: none; transition: border-color 0.3s; caret-color: #B89A60;
+      margin-bottom: 20px; display: block;
+    }
+    .signup-field::placeholder { color: #2A4A2A; }
+    .signup-field:focus { border-color: #8A9E7A; }
+
+    .signup-btn {
+      width: 100%; background: transparent; border: 0.5px solid #4A6A4A;
+      padding: 14px 24px; font-family: 'Cormorant Upright', serif;
+      font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
+      font-style: italic; color: #8A9E7A; cursor: pointer; transition: all 0.3s;
+      position: relative;
+    }
+    .signup-btn:hover { background: rgba(138,158,122,0.08); border-color: #8A9E7A; color: #F7F2E8; }
+
+    .signup-error { font-family: 'Caveat', cursive; font-size: 14px; color: #C4907A; margin-top: 12px; font-style: italic; text-align: center; display: none; }
+    .signup-error.visible { display: block; }
+
+    .signup-success { display: none; text-align: center; padding: 20px 0; }
+    .signup-success.visible { display: block; }
+    .signup-success-title { font-family: 'Great Vibes', cursive; font-size: 36px; color: #F7F2E8; margin-bottom: 10px; }
+    .signup-success-sub { font-family: 'Cormorant Upright', serif; font-size: 13px; font-style: italic; color: #8A9E7A; line-height: 1.8; }
+
+    .signup-footnote { font-family: 'Caveat', cursive; font-size: 12px; color: #2A4A2A; text-align: center; margin-top: 14px; font-style: italic; line-height: 1.6; }
+
+    /* past issues */
+    .past-issues { margin-top: 32px; border-top: 0.5px dashed #2A4A2A; padding-top: 20px; }
+    .past-label { font-family: 'Cormorant Upright', serif; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #4A6A4A; font-style: italic; margin-bottom: 16px; display: block; }
+
+    .coming-soon-issue {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 0.5px solid #1A2E1A;
+      opacity: 0.5;
+    }
+    .coming-soon-name { font-family: 'Great Vibes', cursive; font-size: 22px; color: #4A6A4A; }
+    .coming-soon-date { font-family: 'Cormorant Upright', serif; font-size: 11px; font-style: italic; color: #2A4A2A; letter-spacing: 0.08em; }
+    .no-issues-yet { font-family: 'Caveat', cursive; font-size: 13px; color: #2A4A2A; font-style: italic; line-height: 1.7; padding: 8px 0; }
+
+    @media (max-width: 580px) {
+      .letters-wrap { grid-template-columns: 1fr; gap: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">Fog & Thread</a>
+    <div class="nav-links">
+      <a href="threadbare.html">Threadbare</a>
+      <a href="loose-leaves.html">Loose Leaves</a>
+      <a href="light-grain.html">Light & Grain</a>
+      <a href="submit.html">Add Your Thread</a>
+      <a href="newsletter.html">Letters from the Fog</a>
+      <a href="about.html">Behind the Fog</a>
+    </div>
+  </nav>
+
+  <div class="newsletter-page">
+
+    <div class="page-header">
+      <span class="page-tag">✦ once a month, into your inbox ✦</span>
+      <h1 class="page-title">Letters from the Fog</h1>
+      <p class="page-desc">a monthly letter, hand-curated by Nistha. the best of the fog, delivered to you</p>
+    </div>
+
+    <div class="page-divider">
+      <div class="page-divider-line"></div>
+      <span class="page-divider-ornament">✦</span>
+      <div class="page-divider-line"></div>
+    </div>
+
+    <div class="letters-wrap">
+
+      <!-- left -->
+      <div class="envelope-side">
+
+        <div class="envelope-wrap">
+          <div class="envelope">
+            <div class="wax-seal">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </div>
+            <div class="envelope-content">
+              <span class="envelope-issue-label">Coming soon, Issue No. 1</span>
+              <h2 class="envelope-issue-name">The First Fog</h2>
+              <p class="envelope-preview">
+                Nistha's poem "In the Labyrinth", a note on why this all started, and the first threads from our community. Arriving end of March 2026.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pitch-text">
+          <span class="highlight">Once a month, a letter arrives.</span>
+          Nistha hand-picks the best of what was submitted, the poems, the essays, the photographs, and adds something of her own.
+          <br><br>
+          Every issue has a different name. Every issue feels like something worth keeping.
+        </div>
+
+        <div class="what-inside">
+          <span class="what-inside-label">what is inside each letter</span>
+          <div class="inside-item"><div class="inside-dot"></div><p class="inside-text">The best submissions of the month, curated by Nistha personally</p></div>
+          <div class="inside-item"><div class="inside-dot"></div><p class="inside-text">Something new from Nistha, a poem, a thought, a story</p></div>
+          <div class="inside-item"><div class="inside-dot"></div><p class="inside-text">A mood board, a playlist, something worth sitting with</p></div>
+          <div class="inside-item"><div class="inside-dot"></div><p class="inside-text">The next issue's theme so you can start writing</p></div>
+        </div>
+      </div>
+
+      <!-- right -->
+      <div class="signup-side">
+        <div class="signup-card">
+          <h2 class="signup-title">join the fog</h2>
+          <p class="signup-sub">no spam. just one letter a month.</p>
+
+          <div id="signupArea">
+            <input class="signup-field" type="text" id="signupName" placeholder="your name" />
+            <input class="signup-field" type="email" id="signupEmail" placeholder="your email address" />
+            <button class="signup-btn" onclick="handleSignup()">receive the letter</button>
+            <p class="signup-error" id="signupError"></p>
+            <p class="signup-footnote">unsubscribe anytime. no hard feelings.</p>
+          </div>
+
+          <div class="signup-success" id="signupSuccess">
+            <p class="signup-success-title">welcome to the fog</p>
+            <p class="signup-success-sub">your letter is on its way.<br>The First Fog arrives end of March 2026.</p>
+          </div>
+
+          <div class="past-issues">
+            <span class="past-label">issues</span>
+            <div class="coming-soon-issue">
+              <span class="coming-soon-name">The First Fog</span>
+              <span class="coming-soon-date">coming end of March</span>
+            </div>
+            <p class="no-issues-yet" style="margin-top:14px;">no letters sent yet. the fog is still gathering.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <h2 class="footer-title">Fog & Thread</h2>
+      <p class="footer-tagline">when the fog confuses you, the thread guides you home</p>
+      <nav class="footer-nav">
+        <a href="threadbare.html">Threadbare</a>
+        <a href="loose-leaves.html">Loose Leaves</a>
+        <a href="light-grain.html">Light & Grain</a>
+        <a href="submit.html">Add Your Thread</a>
+        <a href="newsletter.html">Letters from the Fog</a>
+        <a href="about.html">Behind the Fog</a>
+      </nav>
+      <p class="footer-credit">founded by Nistha, 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    function handleSignup() {
+      var name = document.getElementById('signupName').value.trim();
+      var email = document.getElementById('signupEmail').value.trim();
+      var err = document.getElementById('signupError');
+
+      err.classList.remove('visible');
+
+      if (!name) {
+        err.textContent = '✦ please enter your name.';
+        err.classList.add('visible');
+        return;
+      }
+      if (!email || email.indexOf('@') === -1) {
+        err.textContent = '✦ please enter a valid email address.';
+        err.classList.add('visible');
+        return;
+      }
+
+      document.getElementById('signupArea').style.display = 'none';
+      document.getElementById('signupSuccess').classList.add('visible');
+    }
+  </script>
+
+</body>
+</html>

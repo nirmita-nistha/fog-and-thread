@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Your Thread — Fog & Thread</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Upright:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    body { padding-top: 56px; background: #0E1A12; }
+    .submit-page { padding: 0 0 80px; }
+
+    .submission-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 60px;
+      align-items: start;
+      padding: 0 32px;
+    }
+
+    .letter-intro {
+      font-family: 'Caveat', cursive;
+      font-size: 20px;
+      line-height: 1.9;
+      color: #C4B49A;
+      margin-bottom: 32px;
+    }
+    .letter-intro .big { font-size: 24px; color: #F7F2E8; display: block; margin-bottom: 4px; }
+    .letter-intro .italic { font-style: italic; color: #8A9E7A; }
+
+    .what-we-take { margin-top: 32px; border-top: 0.5px dashed #2A4A2A; padding-top: 24px; }
+    .what-label { font-family: 'Cormorant Upright', serif; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #4A6A4A; font-style: italic; margin-bottom: 16px; display: block; }
+    .what-section { margin-bottom: 18px; }
+    .what-section-title { font-family: 'Great Vibes', cursive; font-size: 26px; color: #8A9E7A; margin-bottom: 8px; }
+    .what-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; padding-left: 8px; }
+    .what-dot { width: 3px; height: 3px; border-radius: 50%; background: #B89A60; margin-top: 10px; flex-shrink: 0; }
+    .what-text { font-family: 'Cormorant Upright', serif; font-size: 13px; font-style: italic; color: #6A8A6A; line-height: 1.7; }
+
+    .form-note { font-family: 'Caveat', cursive; font-size: 14px; color: #4A6A4A; margin-bottom: 28px; font-style: italic; line-height: 1.6; }
+
+    .field-group { margin-bottom: 22px; }
+    .field-label { font-family: 'Cormorant Upright', serif; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #6A8A6A; font-style: italic; display: block; margin-bottom: 8px; }
+
+    .field-input {
+      width: 100%; background: transparent; border: none;
+      border-bottom: 0.5px solid #2A4A2A; padding: 8px 0;
+      font-family: 'Caveat', cursive; font-size: 17px; color: #F7F2E8;
+      outline: none; transition: border-color 0.3s; caret-color: #B89A60;
+    }
+    .field-input::placeholder { color: #2A4A2A; }
+    .field-input:focus { border-color: #8A9E7A; }
+
+    .field-textarea {
+      width: 100%; background: transparent; border: 0.5px solid #2A4A2A;
+      padding: 14px; font-family: 'Caveat', cursive; font-size: 16px; color: #F7F2E8;
+      outline: none; resize: vertical; min-height: 140px; line-height: 1.8;
+      transition: border-color 0.3s; caret-color: #B89A60;
+    }
+    .field-textarea::placeholder { color: #2A4A2A; }
+    .field-textarea:focus { border-color: #8A9E7A; }
+
+    .type-section-label { font-family: 'Cormorant Upright', serif; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #4A6A4A; font-style: italic; display: block; margin: 0 0 8px; }
+    .type-selector { display: flex; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+    .type-pill { font-family: 'Cormorant Upright', serif; font-size: 11px; letter-spacing: 0.12em; font-style: italic; color: #4A6A4A; border: 0.5px solid #2A4A2A; padding: 5px 14px; cursor: pointer; border-radius: 20px; transition: all 0.25s; background: none; }
+    .type-pill:hover { border-color: #6A8A6A; color: #8A9E7A; }
+    .type-pill.active { border-color: #8A9E7A; color: #F7F2E8; background: rgba(138,158,122,0.08); }
+    .type-group { margin-bottom: 14px; }
+
+    .file-upload-area { display: none; border: 0.5px dashed #2A4A2A; padding: 20px; text-align: center; cursor: pointer; transition: border-color 0.3s, background 0.3s; margin-bottom: 22px; position: relative; }
+    .file-upload-area:hover { border-color: #8A9E7A; background: rgba(138,158,122,0.04); }
+    .file-upload-area.visible { display: block; }
+    .file-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-icon { font-size: 20px; margin-bottom: 8px; display: block; }
+    .upload-text { font-family: 'Cormorant Upright', serif; font-size: 13px; font-style: italic; color: #6A8A6A; line-height: 1.6; }
+    .upload-subtext { font-family: 'Caveat', cursive; font-size: 12px; color: #2A4A2A; margin-top: 4px; }
+    .upload-filename { font-family: 'Caveat', cursive; font-size: 13px; color: #8A9E7A; margin-top: 8px; display: none; }
+
+    .anon-toggle { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; cursor: pointer; }
+    .toggle-box { width: 18px; height: 18px; border: 0.5px solid #4A6A4A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.3s, background 0.3s; }
+    .toggle-box.checked { border-color: #8A9E7A; background: rgba(138,158,122,0.1); }
+    .toggle-check { font-size: 10px; color: #8A9E7A; opacity: 0; transition: opacity 0.2s; }
+    .toggle-box.checked .toggle-check { opacity: 1; }
+    .toggle-label { font-family: 'Cormorant Upright', serif; font-size: 13px; font-style: italic; color: #6A8A6A; line-height: 1.5; }
+    .toggle-label span { color: #8A9E7A; }
+
+    .submit-btn { width: 100%; background: transparent; border: 0.5px solid #4A6A4A; padding: 14px 24px; font-family: 'Cormorant Upright', serif; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; font-style: italic; color: #8A9E7A; cursor: pointer; transition: all 0.3s; margin-top: 8px; position: relative; }
+    .submit-btn:hover { background: rgba(138,158,122,0.08); border-color: #8A9E7A; color: #F7F2E8; }
+
+    .form-error { font-family: 'Caveat', cursive; font-size: 14px; color: #C4907A; margin-top: 12px; font-style: italic; text-align: center; display: none; }
+    .form-error.visible { display: block; }
+
+    .form-footnote { font-family: 'Caveat', cursive; font-size: 12px; color: #2A4A2A; text-align: center; margin-top: 14px; font-style: italic; line-height: 1.6; }
+
+    .success-msg { display: none; text-align: center; padding: 40px 0; }
+    .success-msg.visible { display: block; }
+    .success-title { font-family: 'Great Vibes', cursive; font-size: 48px; color: #F7F2E8; margin-bottom: 16px; }
+    .success-sub { font-family: 'Cormorant Upright', serif; font-size: 14px; font-style: italic; color: #8A9E7A; line-height: 1.8; }
+
+    @media (max-width: 580px) {
+      .submission-wrap { grid-template-columns: 1fr; gap: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">Fog & Thread</a>
+    <div class="nav-links">
+      <a href="threadbare.html">Threadbare</a>
+      <a href="loose-leaves.html">Loose Leaves</a>
+      <a href="light-grain.html">Light & Grain</a>
+      <a href="submit.html">Add Your Thread</a>
+      <a href="newsletter.html">Letters from the Fog</a>
+      <a href="about.html">Behind the Fog</a>
+    </div>
+  </nav>
+
+  <div class="submit-page">
+
+    <div class="page-header">
+      <span class="page-tag">✦ leave something behind ✦</span>
+      <h1 class="page-title">Add Your Thread</h1>
+    </div>
+
+    <div class="page-divider">
+      <div class="page-divider-line"></div>
+      <span class="page-divider-ornament">✦</span>
+      <div class="page-divider-line"></div>
+    </div>
+
+    <div class="submission-wrap">
+
+      <div class="letter-side">
+        <div class="letter-intro">
+          <span class="big">Every piece of creative writing deserves to be read.</span>
+          Stop letting yours rot in a hidden folder in your notes app.
+          <br><br>
+          It found its way here for a reason, so let it out. Submit your poem, your essay. You can put your name to it or keep it anonymous.
+          <span class="italic">That part is entirely yours.</span>
+          <br><br>
+          All we ask is that it is honest.
+        </div>
+
+        <div class="what-we-take">
+          <span class="what-label">what lives here</span>
+          <div class="what-section">
+            <p class="what-section-title">Threadbare</p>
+            <div class="what-item"><div class="what-dot"></div><p class="what-text">Poetry, any form, any length</p></div>
+          </div>
+          <div class="what-section">
+            <p class="what-section-title">Loose Leaves</p>
+            <div class="what-item"><div class="what-dot"></div><p class="what-text">Personal essays and journaling</p></div>
+            <div class="what-item"><div class="what-dot"></div><p class="what-text">Articles and long-form writing</p></div>
+          </div>
+          <div class="what-section">
+            <p class="what-section-title">Light & Grain</p>
+            <div class="what-item"><div class="what-dot"></div><p class="what-text">Photography</p></div>
+            <div class="what-item"><div class="what-dot"></div><p class="what-text">Art and illustration</p></div>
+            <div class="what-item"><div class="what-dot"></div><p class="what-text">Fashion and mood boards</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-side">
+        <p class="form-note">✦ fill this out like you are leaving a note for someone who will understand</p>
+
+        <div id="formArea">
+          <div class="field-group">
+            <span class="field-label">What are you submitting?</span>
+            <div class="type-group">
+              <span class="type-section-label">writing</span>
+              <div class="type-selector">
+                <button class="type-pill active" onclick="selectType(this, 'writing')">Poetry</button>
+                <button class="type-pill" onclick="selectType(this, 'writing')">Personal Essay</button>
+                <button class="type-pill" onclick="selectType(this, 'writing')">Article</button>
+              </div>
+            </div>
+            <div class="type-group">
+              <span class="type-section-label">visual</span>
+              <div class="type-selector">
+                <button class="type-pill" onclick="selectType(this, 'photo')">Photography</button>
+                <button class="type-pill" onclick="selectType(this, 'visual')">Art</button>
+                <button class="type-pill" onclick="selectType(this, 'visual')">Fashion</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <span class="field-label">Title of your piece</span>
+            <input class="field-input" id="titleInput" type="text" placeholder="what do you call it?" />
+          </div>
+
+          <div class="field-group">
+            <span class="field-label">Your name (optional)</span>
+            <input class="field-input" type="text" id="nameInput" placeholder="or leave blank to stay in the fog" />
+          </div>
+
+          <div class="field-group">
+            <span class="field-label">Your email</span>
+            <input class="field-input" id="emailInput" type="email" placeholder="so Nistha can write back" />
+          </div>
+
+          <div class="anon-toggle" onclick="toggleAnon()">
+            <div class="toggle-box" id="anonBox">
+              <span class="toggle-check">✓</span>
+            </div>
+            <p class="toggle-label">publish as <span>"by a fog dweller"</span></p>
+          </div>
+
+          <div class="field-group" id="writingField">
+            <span class="field-label">Your piece</span>
+            <textarea class="field-textarea" id="writingInput" placeholder="paste your writing here..."></textarea>
+          </div>
+
+          <div class="file-upload-area" id="photoUpload">
+            <input type="file" accept="image/*" onchange="showFilename(this, 'photoName')" id="photoInput" />
+            <span class="upload-icon">📷</span>
+            <p class="upload-text">attach your frame</p>
+            <p class="upload-subtext">jpg, png, raw — up to 20mb</p>
+            <p class="upload-filename" id="photoName"></p>
+          </div>
+
+          <div class="file-upload-area" id="visualUpload">
+            <input type="file" accept="image/*,.pdf" onchange="showFilename(this, 'visualName')" id="visualInput" />
+            <span class="upload-icon">🎨</span>
+            <p class="upload-text">show us your work</p>
+            <p class="upload-subtext">jpg, png, pdf — up to 20mb</p>
+            <p class="upload-filename" id="visualName"></p>
+          </div>
+
+          <div class="field-group">
+            <span class="field-label">Anything you want to say about it? (optional)</span>
+            <input class="field-input" type="text" placeholder="a note to Nistha, context, anything..." />
+          </div>
+
+          <button class="submit-btn" onclick="handleSubmit()">leave your thread</button>
+          <p class="form-error" id="formError"></p>
+          <p class="form-footnote">Nistha reads every single submission personally.<br>You will hear back.</p>
+        </div>
+
+        <div class="success-msg" id="successMsg">
+          <p class="success-title">your thread is received</p>
+          <p class="success-sub">Nistha will read it personally.<br>You will hear back.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <h2 class="footer-title">Fog & Thread</h2>
+      <p class="footer-tagline">when the fog confuses you, the thread guides you home</p>
+      <nav class="footer-nav">
+        <a href="threadbare.html">Threadbare</a>
+        <a href="loose-leaves.html">Loose Leaves</a>
+        <a href="light-grain.html">Light & Grain</a>
+        <a href="submit.html">Add Your Thread</a>
+        <a href="newsletter.html">Letters from the Fog</a>
+        <a href="about.html">Behind the Fog</a>
+      </nav>
+      <p class="footer-credit">founded by Nistha, 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    var currentKind = 'writing';
+
+    function selectType(el, kind) {
+      currentKind = kind;
+      document.querySelectorAll('.type-pill').forEach(function(p) { p.classList.remove('active'); });
+      el.classList.add('active');
+      document.getElementById('writingField').style.display = kind === 'writing' ? 'block' : 'none';
+      document.getElementById('photoUpload').classList.toggle('visible', kind === 'photo');
+      document.getElementById('visualUpload').classList.toggle('visible', kind === 'visual');
+    }
+
+    function showFilename(input, targetId) {
+      var el = document.getElementById(targetId);
+      if (input.files && input.files[0]) {
+        el.textContent = '✓ ' + input.files[0].name;
+        el.style.display = 'block';
+      }
+    }
+
+    function toggleAnon() {
+      var box = document.getElementById('anonBox');
+      var nameInput = document.getElementById('nameInput');
+      box.classList.toggle('checked');
+      if (box.classList.contains('checked')) {
+        nameInput.value = '';
+        nameInput.disabled = true;
+        nameInput.placeholder = 'staying in the fog';
+        nameInput.style.opacity = '0.3';
+      } else {
+        nameInput.disabled = false;
+        nameInput.placeholder = 'or leave blank to stay in the fog';
+        nameInput.style.opacity = '1';
+      }
+    }
+
+    function showError(msg) {
+      var err = document.getElementById('formError');
+      err.textContent = '✦ ' + msg;
+      err.classList.add('visible');
+    }
+
+    function clearError() {
+      var err = document.getElementById('formError');
+      err.classList.remove('visible');
+    }
+
+    function handleSubmit() {
+      clearError();
+
+      var title = document.getElementById('titleInput').value.trim();
+      if (!title) {
+        showError('Please give your piece a title.');
+        return;
+      }
+
+      var email = document.getElementById('emailInput').value.trim();
+      if (!email || email.indexOf('@') === -1) {
+        showError('Please enter a valid email address.');
+        return;
+      }
+
+      if (currentKind === 'writing') {
+        var writing = document.getElementById('writingInput').value.trim();
+        if (!writing) {
+          showError('Please paste your writing before submitting.');
+          return;
+        }
+      }
+
+      if (currentKind === 'photo') {
+        var photoInput = document.getElementById('photoInput');
+        if (!photoInput.files || photoInput.files.length === 0) {
+          showError('Please attach your photo before submitting.');
+          return;
+        }
+      }
+
+      if (currentKind === 'visual') {
+        var visualInput = document.getElementById('visualInput');
+        if (!visualInput.files || visualInput.files.length === 0) {
+          showError('Please attach your file before submitting.');
+          return;
+        }
+      }
+
+      document.getElementById('formArea').style.display = 'none';
+      document.getElementById('successMsg').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+
+</body>
+</html>
