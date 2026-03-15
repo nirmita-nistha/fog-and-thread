@@ -10,11 +10,9 @@
   <link rel="stylesheet" href="styles/main.css" />
   <style>
     body { padding-top: 56px; background: #0A1510; }
-
     .film-page { padding: 0 0 80px; }
 
     .film-roll-outer {
-      position: relative;
       width: 100%;
       overflow-x: auto;
       overflow-y: hidden;
@@ -33,7 +31,8 @@
       border-top: 2px solid #162A1C;
       border-bottom: 2px solid #162A1C;
       padding: 12px 0;
-      width: max-content;
+      width: 100%;
+      min-width: max-content;
     }
 
     .sprockets {
@@ -42,6 +41,7 @@
       padding: 0 16px;
       height: 18px;
       margin-bottom: 10px;
+      width: 100%;
     }
     .sprocket {
       width: 14px;
@@ -55,17 +55,17 @@
 
     .frames-row {
       display: flex;
-      gap: 6px;
-      padding: 0 20px;
+      width: 100%;
+      padding: 0;
     }
 
     .sprockets-bottom { margin-top: 10px; margin-bottom: 0; }
 
     .film-frame {
       position: relative;
-      width: 240px;
+      flex: 1;
+      min-width: 200px;
       height: 200px;
-      flex-shrink: 0;
       background: #081008;
       border: 1px solid #1E3A24;
       overflow: hidden;
@@ -168,10 +168,7 @@
       color: #2A4A2A;
       font-style: italic;
     }
-    .scroll-arrow {
-      font-size: 14px;
-      animation: nudge 1.8s ease-in-out infinite;
-    }
+    .scroll-arrow { font-size: 14px; animation: nudge 1.8s ease-in-out infinite; }
     @keyframes nudge {
       0%, 100% { transform: translateX(0); }
       50% { transform: translateX(6px); }
@@ -195,11 +192,78 @@
       transition: color 0.2s;
     }
     .submit-nudge a:hover { color: #F7F2E8; }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(8,15,10,0.96);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      animation: fadeInLightbox 0.3s ease;
+    }
+    .lightbox.active { display: flex; }
+    @keyframes fadeInLightbox {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .lightbox-img-wrap {
+      position: relative;
+      max-width: 88vw;
+      max-height: 88vh;
+      cursor: default;
+    }
+    .lightbox-img {
+      max-width: 88vw;
+      max-height: 80vh;
+      object-fit: contain;
+      display: block;
+      filter: sepia(10%) contrast(1.05) brightness(0.95);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+    }
+    .lightbox-caption {
+      font-family: 'Caveat', cursive;
+      font-size: 15px;
+      color: #8A9E7A;
+      text-align: center;
+      margin-top: 16px;
+      font-style: italic;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4A6A4A;
+      cursor: pointer;
+      transition: color 0.2s;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .lightbox-close:hover { color: #F7F2E8; }
+    .lightbox-hint {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: #2A4A2A;
+      font-style: italic;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
   <nav class="site-nav">
     <a href="index.html" class="nav-logo">Fog & Thread</a>
     <div class="nav-links">
@@ -234,7 +298,7 @@
         <div class="frames-row">
 
           <!-- Frame 1 — Jurong Lake -->
-          <div class="film-frame">
+          <div class="film-frame" onclick="openLightbox('images/lake.jpg', 'Jurong Lake, February 2026')">
             <span class="frame-number">01</span>
             <img src="images/lake.jpg" alt="Jurong Lake" />
             <div class="frame-caption">
@@ -259,6 +323,13 @@
 
           <div class="film-frame">
             <span class="frame-number">04</span>
+            <div class="frame-placeholder">
+              <p class="frame-placeholder-text">more frames<br>developing</p>
+            </div>
+          </div>
+
+          <div class="film-frame">
+            <span class="frame-number">05</span>
             <div class="frame-placeholder">
               <p class="frame-placeholder-text">more frames<br>developing</p>
             </div>
@@ -292,7 +363,16 @@
 
   </div>
 
-  <!-- FOOTER -->
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <div class="lightbox-img-wrap" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeLightbox()">✕ close</button>
+      <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+      <p class="lightbox-caption" id="lightboxCaption"></p>
+    </div>
+    <p class="lightbox-hint">click anywhere outside to close</p>
+  </div>
+
   <footer class="site-footer">
     <div class="footer-inner">
       <h2 class="footer-title">Fog & Thread</h2>
@@ -311,42 +391,58 @@
 
   <script>
     function makeSprockets(id, count) {
-      const row = document.getElementById(id);
+      var row = document.getElementById(id);
       if (!row) return;
-      for (let i = 0; i < count; i++) {
-        const s = document.createElement('div');
+      for (var i = 0; i < count; i++) {
+        var s = document.createElement('div');
         s.className = 'sprocket';
         row.appendChild(s);
       }
     }
-    makeSprockets('sprocketsTop', 22);
-    makeSprockets('sprocketsBottom', 22);
+    makeSprockets('sprocketsTop', 30);
+    makeSprockets('sprocketsBottom', 30);
 
-    const outer = document.getElementById('filmOuter');
-    let isDragging = false, startX, scrollLeft;
+    var outer = document.getElementById('filmOuter');
+    var isDragging = false, startX, scrollLeft;
 
-    outer.addEventListener('mousedown', e => {
+    outer.addEventListener('mousedown', function(e) {
       isDragging = true;
       startX = e.pageX - outer.offsetLeft;
       scrollLeft = outer.scrollLeft;
       outer.style.cursor = 'grabbing';
     });
-    outer.addEventListener('mouseleave', () => { isDragging = false; outer.style.cursor = 'grab'; });
-    outer.addEventListener('mouseup', () => { isDragging = false; outer.style.cursor = 'grab'; });
-    outer.addEventListener('mousemove', e => {
+    outer.addEventListener('mouseleave', function() { isDragging = false; outer.style.cursor = 'grab'; });
+    outer.addEventListener('mouseup', function() { isDragging = false; outer.style.cursor = 'grab'; });
+    outer.addEventListener('mousemove', function(e) {
       if (!isDragging) return;
       e.preventDefault();
-      const x = e.pageX - outer.offsetLeft;
+      var x = e.pageX - outer.offsetLeft;
       outer.scrollLeft = scrollLeft - (x - startX) * 1.4;
     });
 
-    outer.addEventListener('touchstart', e => {
+    outer.addEventListener('touchstart', function(e) {
       startX = e.touches[0].pageX - outer.offsetLeft;
       scrollLeft = outer.scrollLeft;
     });
-    outer.addEventListener('touchmove', e => {
-      const x = e.touches[0].pageX - outer.offsetLeft;
+    outer.addEventListener('touchmove', function(e) {
+      var x = e.touches[0].pageX - outer.offsetLeft;
       outer.scrollLeft = scrollLeft - (x - startX) * 1.2;
+    });
+
+    function openLightbox(src, caption) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxCaption').textContent = caption;
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
     });
   </script>
 

@@ -243,19 +243,43 @@
         drawThread(t);
       });
 
-      if(frame>=220&&frame<400){
-        if(traceThread.x<W+20){
+      // trace thread with smooth fade out
+      if(frame>=220&&frame<450){
+        if(frame<400 && traceThread.x<W+20){
           traceThread.x+=traceThread.speed;
           traceThread.y=H*0.47+Math.sin(frame*0.035)*18;
           traceThread.points.push({x:traceThread.x,y:traceThread.y});
           if(traceThread.points.length>130) traceThread.points.shift();
         }
         if(traceThread.points.length>1){
-          ctx.save(); ctx.strokeStyle='#F0D898'; ctx.lineWidth=1.3; ctx.lineCap='round'; ctx.lineJoin='round';
-          ctx.shadowColor='#F0D898'; ctx.shadowBlur=8;
-          ctx.beginPath();
-          traceThread.points.forEach((p,i)=>{i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
-          ctx.globalAlpha=0.75; ctx.stroke(); ctx.restore();
+          // fade out smoothly after frame 380
+          var threadAlpha = frame < 380 ? 0.75 : Math.max(0, 0.75 - (frame-380)/70);
+          if(threadAlpha > 0){
+            ctx.save(); ctx.strokeStyle='#F0D898'; ctx.lineWidth=1.3; ctx.lineCap='round'; ctx.lineJoin='round';
+            ctx.shadowColor='#F0D898'; ctx.shadowBlur=8;
+            ctx.beginPath();
+            traceThread.points.forEach((p,i)=>{i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
+            ctx.globalAlpha=threadAlpha; ctx.stroke(); ctx.restore();
+          }
+        }
+      }
+
+      // soft fog clouds drifting sideways after thread fades (frame 400-560)
+      if(frame>=400 && frame<600){
+        var fogProgress = Math.min(1,(frame-400)/80);
+        var fogFade = frame > 520 ? Math.max(0,1-(frame-520)/80) : 1;
+        var numClouds = 6;
+        for(var ci=0; ci<numClouds; ci++){
+          var cx = (W * (ci/numClouds)) + (frame-400)*1.2 + Math.sin(ci*1.3)*40;
+          var cy = H*0.35 + Math.sin(ci*0.8+frame*0.01)*60;
+          var cr = 80 + Math.sin(ci*1.1)*30;
+          var grad = ctx.createRadialGradient(cx,cy,0,cx,cy,cr);
+          var ca = 0.12 * fogProgress * fogFade;
+          grad.addColorStop(0,`rgba(200,210,200,${ca})`);
+          grad.addColorStop(0.5,`rgba(180,195,180,${ca*0.6})`);
+          grad.addColorStop(1,'rgba(140,160,140,0)');
+          ctx.fillStyle=grad;
+          ctx.beginPath(); ctx.arc(cx,cy,cr,0,Math.PI*2); ctx.fill();
         }
       }
 
