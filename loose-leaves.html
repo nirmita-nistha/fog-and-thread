@@ -16,145 +16,146 @@
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1px;
-      background: #1A2E1A;
-      border: 0.5px solid #1A2E1A;
+      gap: 32px;
       max-width: 900px;
       margin: 0 auto;
       padding: 0 32px;
     }
 
-    .leaf-card {
-      background: #0E1A12;
-      padding: 32px 28px;
+    /* real piece card — book style like threadbare */
+    .book-card {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s ease;
+      transform-origin: bottom center;
       text-decoration: none;
       display: block;
-      transition: background 0.3s;
-      cursor: pointer;
+    }
+    .book-card:hover {
+      transform: translateY(-14px) scale(1.02);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.6), 0 8px 16px rgba(0,0,0,0.4);
+    }
+
+    .book-cover {
+      width: 100%;
+      aspect-ratio: 3/4;
       position: relative;
       overflow: hidden;
+      border-radius: 2px 6px 6px 2px;
+      box-shadow: -3px 0 0 #1A2E1A, -6px 0 0 #141E14, -8px 0 0 #0E1A0E, 4px 4px 20px rgba(0,0,0,0.5);
     }
-    .leaf-card:hover { background: #0A1510; }
 
-    .leaf-card::after {
+    .book-cover::before {
       content: '';
       position: absolute;
-      bottom: 0; left: 28px; right: 28px;
-      height: 0.5px;
-      background: #1A2E1A;
+      left: 0; top: 0; bottom: 0;
+      width: 10px;
+      background: linear-gradient(to right, #0A140A, #1A2E1A, #0E1A0E);
+      z-index: 3;
     }
 
-    .leaf-type {
+    .cover-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: sepia(25%) contrast(1.1) brightness(0.75) saturate(0.8);
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+    .book-card:hover .cover-img {
+      filter: sepia(15%) contrast(1.1) brightness(0.85) saturate(0.9);
+      transform: scale(1.04);
+    }
+
+    .cover-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8,15,10,0.95) 0%, rgba(8,15,10,0.5) 40%, rgba(8,15,10,0.1) 70%, transparent 100%);
+      z-index: 2;
+      transition: background 0.4s ease;
+    }
+    .book-card:hover .cover-overlay {
+      background: linear-gradient(to top, rgba(8,15,10,0.85) 0%, rgba(8,15,10,0.3) 40%, rgba(8,15,10,0.05) 70%, transparent 100%);
+    }
+
+    .cover-text {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px 18px 22px 22px;
+      z-index: 4;
+    }
+    .cover-type {
       font-family: 'Cormorant Upright', serif;
       font-size: 9px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: #8A9E7A;
       font-style: italic;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
       display: block;
     }
-
-    .leaf-title {
+    .cover-title {
       font-family: 'Great Vibes', cursive;
-      font-size: 36px;
+      font-size: 34px;
       color: #F7F2E8;
-      line-height: 1.15;
-      margin-bottom: 8px;
-      text-shadow: 0 0 20px rgba(184,154,96,0.15);
+      line-height: 1.1;
+      margin-bottom: 6px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
-
-    .leaf-author {
+    .cover-author {
       font-family: 'Cormorant Upright', serif;
-      font-size: 12px;
+      font-size: 11px;
       font-style: italic;
-      color: #6A8A6A;
-      margin-bottom: 14px;
-      letter-spacing: 0.04em;
+      color: #8A9E7A;
+      letter-spacing: 0.06em;
     }
 
-    .leaf-excerpt {
-      font-family: 'Cormorant Upright', serif;
-      font-size: 14px;
-      font-style: italic;
-      color: #6A8A6A;
-      line-height: 1.75;
-      margin-bottom: 20px;
+    .thread-line {
+      position: absolute;
+      top: 18px; right: 18px;
+      width: 0; height: 0.5px;
+      background: #B89A60;
+      z-index: 5;
+      transition: width 0.5s ease 0.1s;
     }
+    .book-card:hover .thread-line { width: 30px; }
 
-    .leaf-read {
+    /* coming soon cards */
+    .coming-soon-card {
+      border: 0.5px dashed #2A4A2A;
+      border-radius: 2px 6px 6px 2px;
+      aspect-ratio: 3/4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      opacity: 0.4;
+      transition: opacity 0.3s;
+      cursor: default;
+    }
+    .coming-soon-card:hover { opacity: 0.6; }
+    .coming-soon-text {
       font-family: 'Cormorant Upright', serif;
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: #6A8A6A;
       font-style: italic;
-      transition: color 0.2s;
-      display: inline-block;
-    }
-    .leaf-card:hover .leaf-read { color: #8A9E7A; }
-
-    /* thread accent on hover */
-    .leaf-thread {
-      position: absolute;
-      top: 0; left: 0;
-      width: 0; height: 2px;
-      background: linear-gradient(to right, #B89A60, transparent);
-      transition: width 0.5s ease;
-    }
-    .leaf-card:hover .leaf-thread { width: 100%; }
-
-    /* coming soon */
-    .coming-soon-leaf {
-      background: #0E1A12;
-      padding: 32px 28px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      opacity: 0.35;
-      min-height: 180px;
-    }
-    .coming-soon-leaf p {
-      font-family: 'Cormorant Upright', serif;
-      font-size: 12px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #6A8A6A;
-      font-style: italic;
-      line-height: 1.8;
-    }
-
-    .submit-nudge {
       text-align: center;
-      margin-top: 52px;
-      font-family: 'Cormorant Upright', serif;
-      font-size: 13px;
-      font-style: italic;
-      color: #6A8A6A;
       line-height: 1.8;
-      padding: 0 32px;
     }
-    .submit-nudge a {
-      color: #8A9E7A;
-      text-decoration: none;
-      border-bottom: 0.5px solid #4A6A4A;
-      padding-bottom: 1px;
-      transition: color 0.2s;
-    }
-    .submit-nudge a:hover { color: #F7F2E8; }
+    .coming-soon-ornament { color: #2A4A2A; font-size: 20px; }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
   <nav class="site-nav">
     <a href="index.html" class="nav-logo">Fog & Thread</a>
     <div class="nav-links">
       <a href="threadbare.html">Threadbare</a>
       <a href="loose-leaves.html">Loose Leaves</a>
       <a href="light-grain.html">Light & Grain</a>
-      <a href="submit.html">Add Your Thread</a>
       <a href="newsletter.html">Letters from the Fog</a>
       <a href="about.html">Behind the Fog</a>
     </div>
@@ -165,7 +166,7 @@
     <div class="page-header">
       <span class="page-tag">✦ prose that drifts ✦</span>
       <h1 class="page-title">Loose Leaves</h1>
-      <p class="page-desc">essays, articles and personal pieces — prose that wanders and finds its way</p>
+      <p class="page-desc">essays, articles and personal pieces — things written in the in-between moments</p>
     </div>
 
     <div class="page-divider">
@@ -176,28 +177,35 @@
 
     <div class="cards-grid">
 
-      <!-- Coming soon cards -->
-      <div class="coming-soon-leaf">
-        <p>the first leaf<br>is still being written</p>
+      <!-- Card 1 — Not for an Audience -->
+      <a class="book-card" href="not-for-an-audience.html">
+        <div class="book-cover">
+          <div class="thread-line"></div>
+          <img class="cover-img" src="images/burnt_film.jpeg" alt="Not for an Audience" />
+          <div class="cover-overlay"></div>
+          <div class="cover-text">
+            <span class="cover-type">Personal Essay</span>
+            <h2 class="cover-title">Not for an Audience</h2>
+            <p class="cover-author">by Nistha</p>
+          </div>
+        </div>
+      </a>
+
+      <!-- Coming soon -->
+      <div class="coming-soon-card">
+        <span class="coming-soon-ornament">🌿</span>
+        <p class="coming-soon-text">more leaves<br>on their way</p>
       </div>
 
-      <div class="coming-soon-leaf">
-        <p>your essay<br>could live here</p>
-      </div>
-
-      <div class="coming-soon-leaf">
-        <p>more pieces<br>on their way</p>
+      <div class="coming-soon-card">
+        <span class="coming-soon-ornament">✦</span>
+        <p class="coming-soon-text">more leaves<br>on their way</p>
       </div>
 
     </div>
 
-    <p class="submit-nudge">
-      have something to say? &nbsp;<a href="submit.html">add your thread →</a>
-    </p>
-
   </div>
 
-  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-inner">
       <h2 class="footer-title">Fog & Thread</h2>
@@ -206,7 +214,6 @@
         <a href="threadbare.html">Threadbare</a>
         <a href="loose-leaves.html">Loose Leaves</a>
         <a href="light-grain.html">Light & Grain</a>
-        <a href="submit.html">Add Your Thread</a>
         <a href="newsletter.html">Letters from the Fog</a>
         <a href="about.html">Behind the Fog</a>
       </nav>
