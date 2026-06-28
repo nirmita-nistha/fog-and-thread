@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Margo — Fog & Thread</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Upright:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    body { padding-top: 56px; background: #080F0A; margin: 0; }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: brightness(0.5) contrast(1.1) saturate(0.85);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(8,15,10,0.2) 0%, rgba(8,15,10,0.1) 40%, rgba(8,15,10,0.75) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px 32px;
+      max-width: 680px;
+    }
+
+    .hero-type {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #8A9E7A;
+      font-style: italic;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .hero-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(72px, 14vw, 120px);
+      color: #F7F2E8;
+      line-height: 1;
+      margin-bottom: 16px;
+      text-shadow: 0 0 60px rgba(8,15,10,0.9), 0 2px 20px rgba(8,15,10,0.7);
+    }
+
+    .hero-author {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: #8A9E7A;
+      letter-spacing: 0.1em;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+    }
+    .scroll-hint span {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #4A6A4A;
+      font-style: italic;
+    }
+    .scroll-line {
+      width: 0.5px;
+      height: 36px;
+      background: linear-gradient(to bottom, #4A6A4A, transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    /* piece body */
+    .piece-body {
+      background: #080F0A;
+      padding: 80px 24px 100px;
+      position: relative;
+    }
+
+    .piece-body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 0.5px;
+      height: 60px;
+      background: linear-gradient(to bottom, #2A4A2A, transparent);
+    }
+
+    .piece-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .piece-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 52px;
+    }
+    .piece-divider-line { width: 48px; height: 0.5px; background: #2A4A2A; }
+    .piece-divider-ornament { color: #4A6A4A; font-size: 10px; }
+
+    .piece-text {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 18px;
+      font-style: italic;
+      line-height: 2;
+      color: #C4B49A;
+    }
+
+    .piece-text p { margin-bottom: 32px; }
+
+    .piece-text p:first-child::first-letter {
+      font-family: 'Great Vibes', cursive;
+      font-size: 72px;
+      float: left;
+      line-height: 0.75;
+      margin-right: 10px;
+      color: #8A9E7A;
+    }
+
+    /* inline photo */
+    .inline-photo {
+      width: 100%;
+      margin: 48px 0;
+      position: relative;
+    }
+    .inline-photo img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      filter: sepia(10%) contrast(1.05) brightness(0.85) saturate(0.9);
+    }
+    .inline-photo-caption {
+      font-family: 'Caveat', cursive;
+      font-size: 13px;
+      color: #4A6A4A;
+      font-style: italic;
+      text-align: right;
+      margin-top: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ending line */
+    .piece-ending {
+      color: #F7F2E8;
+      font-size: 19px;
+      font-style: italic;
+      border-left: 1px solid #4A6A4A;
+      padding-left: 24px;
+      margin-top: 16px;
+    }
+
+    .piece-footer {
+      border-top: 0.5px dashed #1A2E1A;
+      padding-top: 32px;
+      margin-top: 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .piece-footer-author {
+      font-family: 'Great Vibes', cursive;
+      font-size: 32px;
+      color: #8A9E7A;
+    }
+    .piece-footer-meta {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      font-style: italic;
+      color: #2A4A2A;
+      letter-spacing: 0.1em;
+      text-align: right;
+    }
+
+    .back-btn {
+      display: block;
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4A6A4A;
+      font-style: italic;
+      text-decoration: none;
+      margin: 32px 32px 0;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: #8A9E7A; }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">Fog & Thread</a>
+    <div class="nav-links">
+      <a href="threadbare.html">Threadbare</a>
+      <a href="loose-leaves.html">Loose Leaves</a>
+      <a href="light-grain.html">Light & Grain</a>
+      <a href="newsletter.html">Letters from the Fog</a>
+      <a href="about.html">Behind the Fog</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <img class="hero-img" src="images/clouds2.jpeg" alt="Margo" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-type">Short Story</span>
+      <h1 class="hero-title">Margo</h1>
+      <p class="hero-author">by Nistha</p>
+    </div>
+    <div class="scroll-hint">
+      <span>read</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+
+  <div class="piece-body">
+    <a href="loose-leaves.html" class="back-btn">← back to loose leaves</a>
+
+    <div class="piece-inner">
+
+      <div class="piece-divider">
+        <div class="piece-divider-line"></div>
+        <span class="piece-divider-ornament">✦</span>
+        <div class="piece-divider-line"></div>
+      </div>
+
+      <div class="piece-text">
+
+        <p>Margo woke up at 6. Her bus would arrive at 7 but she had already made the decision. It was the 1st of November and no matter what, she was going to make the best use of this month. Her pre-boards were in another month and half her syllabus was pending. The other half, she had forgotten everything. After being sick every other day, taking leaves and spending the time she was well just catching up on notes from when she wasn't, she had made up her mind. She was going to show up every day.</p>
+
+        <p>She went to the bathroom to shower. It was annoying to clean the red floor, but it was a daily job now. She felt weak; maybe the weakest she had felt in all fifteen years of her life. She needed more sleep, more rest. It was as if her body was slowly giving up. But she couldn't rest, atleast not today.</p>
+
+        <p>She wore her uniform and sat at the breakfast table. Fifteen minutes until the bus. After the fourth bite, she told her mom, "I'm not sure if I should go." Her mom looked at her with pity. "It's up to you. Don't force yourself if you know you can't survive it. It's a long way to school."</p>
+
+        <p>The next five minutes went by in contemplation. Her body was flooding; she couldn't even stand without feeling a cold rush through her entire body. What if she went and it happened again? For the fourth day in a row: humiliation by her own self. The nurse in the infirmary had already started looking at her like she was making it up. It took an hour to get home from school. The other day, the nurse had lectured her about keeping extras. Nobody was going to tell her that Margo also used to bring a blazer not because of the cold of course. She had promised her best friend she would show up today. But if she went, her best friend would miss class too, just to sit with her in the infirmary. And washing, drying, and ironing takes time.</p>
+
+        <p>She went back to her bed with her uniform still on. She texted her, "I am so sorry, I won't be able to make it." She knew her best friend wouldn't see it this early, which is why it made her sad: for being a disappointment, again.</p>
+
+        <p>She dozed off the moment she lay down. She felt as if she was sleeping in water. The sea, maybe? Except she wasn't on her mattress but was lying right on top of the water, under a peaceful blue sky.</p>
+
+      </div>
+
+      <!-- ocean photo appears here — at the dream moment -->
+      <div class="inline-photo">
+        <img src="images/ocean.jpeg" alt="the sea she dreamed of" />
+        <p class="inline-photo-caption">the sea, maybe</p>
+      </div>
+
+      <div class="piece-text">
+
+        <p>She opened her eyes. The blue sky had been replaced by the ceiling fan and the water was red.</p>
+
+        <p>She got up and rushed to the bathroom. She felt dizzy but she could manage since it wasn't the first time. Brown pyjamas replaced her school pants but she didn't bother changing her t-shirt. She changed the bedsheets, covered the mattress with a layer of newspapers just to be safe, and lay down again. This time hoping to find herself on grass. But fifteen minutes later she was back in the same pool of red water. She rushed to the bathroom, chased by the obvious dizziness which was enveloped by the weird feeling of death. She felt more scared this time; more scared than the time when she was hallucinating in 2nd grade. Or perhaps 3rd grade? She doesn't remember, she doesn't want to.</p>
+
+        <p>She tried screaming her mother's name with everything she had left. And before she could feel those arms, she was already gone.</p>
+
+        <p>She woke up on the bed, not remembering how she got there. She could only half-open her eyes. Her parents were there, both of them, teary. She closed her eyes again as she didn't have the energy to keep them open. Her legs hurt. She couldn't feel her head. She knew she had made another red pool somewhere, but it didn't matter anymore.</p>
+
+        <p>What mattered at the moment was the guilt. Guilt for getting sick again, for missing school, for falling behind. For failing, repeatedly. Because she knew that at the end, the world will see her as a failure. Weak and dependent.</p>
+
+        <p class="piece-ending">But Margo was the strongest person she ever knew.</p>
+
+      </div>
+
+      <div class="piece-footer">
+        <p class="piece-footer-author">Nistha</p>
+        <div class="piece-footer-meta">
+          <p>Loose Leaves</p>
+          <p>Fog & Thread, 2026</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <h2 class="footer-title">Fog & Thread</h2>
+      <p class="footer-tagline">when the fog confuses you, the thread guides you home</p>
+      <nav class="footer-nav">
+        <a href="threadbare.html">Threadbare</a>
+        <a href="loose-leaves.html">Loose Leaves</a>
+        <a href="light-grain.html">Light & Grain</a>
+        <a href="newsletter.html">Letters from the Fog</a>
+        <a href="about.html">Behind the Fog</a>
+      </nav>
+      <p class="footer-credit">founded by Nistha, 2026</p>
+    </div>
+  </footer>
+
+</body>
+</html>

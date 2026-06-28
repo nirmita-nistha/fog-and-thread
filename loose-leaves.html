@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="styles/main.css" />
   <style>
     body { padding-top: 56px; background: #0E1A12; }
-
     .loose-leaves-page { padding: 0 0 80px; }
 
     .cards-grid {
@@ -22,7 +21,6 @@
       padding: 0 32px;
     }
 
-    /* real piece card — book style like threadbare */
     .book-card {
       position: relative;
       cursor: pointer;
@@ -120,7 +118,6 @@
     }
     .book-card:hover .thread-line { width: 30px; }
 
-    /* coming soon cards */
     .coming-soon-card {
       border: 0.5px dashed #2A4A2A;
       border-radius: 2px 6px 6px 2px;
@@ -177,7 +174,21 @@
 
     <div class="cards-grid">
 
-      <!-- Card 1 — Not for an Audience -->
+      <!-- Card 1 — Margo -->
+      <a class="book-card" href="margo.html">
+        <div class="book-cover">
+          <div class="thread-line"></div>
+          <img class="cover-img" src="images/clouds2.jpeg" alt="Margo" />
+          <div class="cover-overlay"></div>
+          <div class="cover-text">
+            <span class="cover-type">Short Story</span>
+            <h2 class="cover-title">Margo</h2>
+            <p class="cover-author">by Nistha</p>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2 — Not for an Audience -->
       <a class="book-card" href="not-for-an-audience.html">
         <div class="book-cover">
           <div class="thread-line"></div>
@@ -194,11 +205,6 @@
       <!-- Coming soon -->
       <div class="coming-soon-card">
         <span class="coming-soon-ornament">🌿</span>
-        <p class="coming-soon-text">more leaves<br>on their way</p>
-      </div>
-
-      <div class="coming-soon-card">
-        <span class="coming-soon-ornament">✦</span>
         <p class="coming-soon-text">more leaves<br>on their way</p>
       </div>
 
