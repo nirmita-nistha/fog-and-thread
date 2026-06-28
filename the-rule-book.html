@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Rule Book — Fog & Thread</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Upright:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    body { padding-top: 56px; background: #080F0A; margin: 0; }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: brightness(0.5) contrast(1.1) saturate(0.8);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(8,15,10,0.2) 0%, rgba(8,15,10,0.1) 40%, rgba(8,15,10,0.75) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px 32px;
+      max-width: 680px;
+    }
+
+    .hero-type {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #8A9E7A;
+      font-style: italic;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .hero-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(62px, 11vw, 100px);
+      color: #F7F2E8;
+      line-height: 1;
+      margin-bottom: 16px;
+      text-shadow: 0 0 60px rgba(8,15,10,0.9), 0 2px 20px rgba(8,15,10,0.7);
+    }
+
+    .hero-author {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: #8A9E7A;
+      letter-spacing: 0.1em;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+    }
+    .scroll-hint span {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #4A6A4A;
+      font-style: italic;
+    }
+    .scroll-line {
+      width: 0.5px;
+      height: 36px;
+      background: linear-gradient(to bottom, #4A6A4A, transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    .piece-body {
+      background: #080F0A;
+      padding: 80px 24px 100px;
+      position: relative;
+    }
+
+    .piece-body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 0.5px;
+      height: 60px;
+      background: linear-gradient(to bottom, #2A4A2A, transparent);
+    }
+
+    .piece-inner {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .piece-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 52px;
+    }
+    .piece-divider-line { width: 48px; height: 0.5px; background: #2A4A2A; }
+    .piece-divider-ornament { color: #4A6A4A; font-size: 10px; }
+
+    /* context note */
+    .context-note {
+      font-family: 'Caveat', cursive;
+      font-size: 15px;
+      color: #4A6A4A;
+      font-style: italic;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 0.5px dashed #1A2E1A;
+      line-height: 1.7;
+    }
+
+    .piece-text {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 18px;
+      font-style: italic;
+      line-height: 2;
+      color: #C4B49A;
+    }
+
+    .piece-text p { margin-bottom: 32px; }
+
+    .piece-text p:first-child::first-letter {
+      font-family: 'Great Vibes', cursive;
+      font-size: 72px;
+      float: left;
+      line-height: 0.75;
+      margin-right: 10px;
+      color: #8A9E7A;
+    }
+
+    .piece-footer {
+      border-top: 0.5px dashed #1A2E1A;
+      padding-top: 32px;
+      margin-top: 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .piece-footer-author {
+      font-family: 'Great Vibes', cursive;
+      font-size: 32px;
+      color: #8A9E7A;
+    }
+    .piece-footer-meta {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      font-style: italic;
+      color: #2A4A2A;
+      letter-spacing: 0.1em;
+      text-align: right;
+    }
+
+    .back-btn {
+      display: block;
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4A6A4A;
+      font-style: italic;
+      text-decoration: none;
+      margin: 32px 32px 0;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: #8A9E7A; }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">Fog & Thread</a>
+    <div class="nav-links">
+      <a href="threadbare.html">Threadbare</a>
+      <a href="loose-leaves.html">Loose Leaves</a>
+      <a href="light-grain.html">Light & Grain</a>
+      <a href="newsletter.html">Letters from the Fog</a>
+      <a href="about.html">Behind the Fog</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <img class="hero-img" src="images/sky4.jpeg" alt="The Rule Book" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-type">Personal Reflection</span>
+      <h1 class="hero-title">The Rule Book</h1>
+      <p class="hero-author">by Shruti Sneha Mahanta</p>
+    </div>
+    <div class="scroll-hint">
+      <span>read</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+
+  <div class="piece-body">
+    <a href="loose-leaves.html" class="back-btn">← back to loose leaves</a>
+
+    <div class="piece-inner">
+
+      <div class="piece-divider">
+        <div class="piece-divider-line"></div>
+        <span class="piece-divider-ornament">✦</span>
+        <div class="piece-divider-line"></div>
+      </div>
+
+      <p class="context-note">✦ last night, juggling observations —</p>
+
+      <div class="piece-text">
+        <p>The condescending beliefs that form the principalities of human beings are also the source of devastating circumstances erupted by those who don't conform. This paradox can be stated when we find ourselves trapped in ideologies that merely aren't ours, or voices that aren't ours. However, we choose to prioritise them because we don't perceive them as deviant behaviour and regard them as morally correct. But these approaches prohibit us from expressing our core potentialities and thus causing a further barrier that not only damages us but also those who construct the very rule book.</p>
+
+        <p>Therefore, the presence of individuality or a supportive framework becomes essential when one is dismissed for asserting a voice of their own. However, such an ideal cannot be universally sustained, as human relationships are inevitably shaped by shifting priorities, bonds, and contexts.</p>
+      </div>
+
+      <div class="piece-footer">
+        <p class="piece-footer-author">Shruti Sneha Mahanta</p>
+        <div class="piece-footer-meta">
+          <p>Loose Leaves</p>
+          <p>Fog & Thread, 2026</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <h2 class="footer-title">Fog & Thread</h2>
+      <p class="footer-tagline">when the fog confuses you, the thread guides you home</p>
+      <nav class="footer-nav">
+        <a href="threadbare.html">Threadbare</a>
+        <a href="loose-leaves.html">Loose Leaves</a>
+        <a href="light-grain.html">Light & Grain</a>
+        <a href="newsletter.html">Letters from the Fog</a>
+        <a href="about.html">Behind the Fog</a>
+      </nav>
+      <p class="footer-credit">founded by Nistha, 2026</p>
+    </div>
+  </footer>
+
+</body>
+</html>
