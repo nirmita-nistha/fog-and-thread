@@ -42,11 +42,28 @@
   <!-- HOMEPAGE SECTIONS PREVIEW -->
   <main class="homepage">
 
-    <!-- Latest piece teaser -->
+    <!-- Latest pieces -->
     <section class="latest-section">
       <div class="latest-inner">
-        <span class="section-eyebrow">✦ latest from threadbare ✦</span>
-        <div class="latest-card">
+        <span class="section-eyebrow">✦ latest from fog & thread ✦</span>
+
+        <!-- Margo -->
+        <div class="latest-card" style="margin-bottom: 80px;">
+          <div class="latest-img-wrap">
+            <img src="images/clouds2.jpeg" alt="Margo" class="latest-img" style="object-position: center top;" />
+            <div class="latest-img-overlay"></div>
+          </div>
+          <div class="latest-text">
+            <span class="latest-type">Short Story</span>
+            <h2 class="latest-title">Margo</h2>
+            <p class="latest-author">by Nistha</p>
+            <p class="latest-excerpt">Margo woke up at 6. Her bus would arrive at 7 but she had already made the decision. It was the 1st of November and no matter what, she was going to make the best use of this month...</p>
+            <a href="margo.html" class="latest-read-btn">read the story</a>
+          </div>
+        </div>
+
+        <!-- In the Labyrinth -->
+        <div class="latest-card latest-card-reverse">
           <div class="latest-img-wrap">
             <img src="images/sea.png" alt="In the Labyrinth" class="latest-img" />
             <div class="latest-img-overlay"></div>
@@ -59,6 +76,7 @@
             <a href="threadbare.html" class="latest-read-btn">read the poem</a>
           </div>
         </div>
+
       </div>
     </section>
 
@@ -323,16 +341,15 @@
 
     window.addEventListener('load', ()=>{ init(); tick(); });
 
-    // hide scroll indicator when user scrolls down
+    // hide scroll indicator permanently once user scrolls
     window.addEventListener('scroll', function() {
       var scrollDown = document.getElementById('scrollDown');
-      if (window.scrollY > 80) {
+      if (window.scrollY > 40) {
         scrollDown.style.opacity = '0';
         scrollDown.style.pointerEvents = 'none';
-      } else {
-        scrollDown.style.opacity = '1';
+        scrollDown.style.transition = 'opacity 0.6s ease';
       }
-    });
+    }, { passive: true });
     window.addEventListener('resize', ()=>{ cancelAnimationFrame(animId); init(); tick(); });
   </script>
 
