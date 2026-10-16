@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Echoes of a Girl Nobody Heard — Fog & Thread</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Upright:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    body { padding-top: 56px; background: #080F0A; margin: 0; }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.42) contrast(1.1) saturate(0.7);
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(8,15,10,0.1) 0%, rgba(8,15,10,0.05) 40%, rgba(8,15,10,0.85) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px 32px;
+      max-width: 680px;
+    }
+    .hero-type {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #8A9E7A;
+      font-style: italic;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .hero-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(36px, 7vw, 72px);
+      color: #F7F2E8;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      text-shadow: 0 0 60px rgba(8,15,10,0.9), 0 2px 20px rgba(8,15,10,0.7);
+    }
+    .hero-author {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: #8A9E7A;
+      letter-spacing: 0.1em;
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+    }
+    .scroll-hint span {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #4A6A4A;
+      font-style: italic;
+    }
+    .scroll-line {
+      width: 0.5px;
+      height: 36px;
+      background: linear-gradient(to bottom, #4A6A4A, transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    .piece-body {
+      background: #080F0A;
+      padding: 60px 24px 100px;
+      position: relative;
+    }
+    .piece-body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 0.5px;
+      height: 60px;
+      background: linear-gradient(to bottom, #2A4A2A, transparent);
+    }
+    .piece-inner {
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    .back-btn {
+      display: inline-block;
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4A6A4A;
+      font-style: italic;
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: #8A9E7A; }
+
+    .piece-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 52px;
+    }
+    .piece-divider-line { width: 48px; height: 0.5px; background: #2A4A2A; }
+    .piece-divider-ornament { color: #4A6A4A; font-size: 10px; }
+
+    .piece-text {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 18px;
+      font-style: italic;
+      line-height: 2;
+      color: #C4B49A;
+    }
+    .piece-text p { margin-bottom: 28px; }
+
+    .piece-text .questions {
+      border-left: 0.5px solid #2A4A2A;
+      padding-left: 24px;
+      margin: 40px 0;
+    }
+    .piece-text .questions p {
+      margin-bottom: 12px;
+      font-size: 17px;
+    }
+    .piece-text .questions p:last-child { margin-bottom: 0; }
+
+    .piece-footer {
+      border-top: 0.5px dashed #1A2E1A;
+      padding-top: 32px;
+      margin-top: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .piece-footer-author {
+      font-family: 'Great Vibes', cursive;
+      font-size: 36px;
+      color: #8A9E7A;
+    }
+    .piece-footer-meta {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      font-style: italic;
+      color: #2A4A2A;
+      letter-spacing: 0.1em;
+      text-align: right;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">Fog & Thread</a>
+    <div class="nav-links">
+      <a href="threadbare.html">Threadbare</a>
+      <a href="loose-leaves.html">Loose Leaves</a>
+      <a href="light-grain.html">Light & Grain</a>
+      <a href="newsletter.html">Letters from the Fog</a>
+      <a href="about.html">Behind the Fog</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <img class="hero-img" src="images/echoes.jpeg" alt="The Echoes of a Girl Nobody Heard" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-type">Personal Essay</span>
+      <h1 class="hero-title">The Echoes of a Girl Nobody Heard</h1>
+      <p class="hero-author">by sewn mouth</p>
+    </div>
+    <div class="scroll-hint">
+      <span>read</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+
+  <div class="piece-body">
+    <div class="piece-inner">
+      <a href="loose-leaves.html" class="back-btn">← back to loose leaves</a>
+
+      <div class="piece-divider">
+        <div class="piece-divider-line"></div>
+        <span class="piece-divider-ornament">✦</span>
+        <div class="piece-divider-line"></div>
+      </div>
+
+      <div class="piece-text">
+        <p>She was never afraid of being alone. She was afraid of finding out that the people beside her never truly wanted to be there.</p>
+
+        <p>For years, she lived surrounded by smiles that disappeared the moment she walked away from the table. People who laughed with her in the morning would whisper about her by night. Honest mistakes became stories, these stories became rumours, and rumours became versions of her that she could no longer recognise. She was judged without being heard, laughed upon behind her and blamed for things she never intended to happen.</p>
+
+        <p>Every small misunderstanding somehow became a fight and somehow in every fight her name got involved even though she was never there. And after years of being made to feel like she was the problem, she slowly began to believe that maybe she really was.</p>
+
+        <p>Maybe she was the reason people argued. Maybe she was the reason someone cried. Maybe things would have been better if she had simply stayed quiet, stayed away or never been there at all. And the saddest part of everything was that she never knew whether any of it was true.</p>
+
+        <p>Now she has new friends, people who make her laugh in ways she once thought she had forgotten. But the past has a strange way of following someone who is desperately trying to leave it behind.</p>
+
+        <p>She wonders whether her friends genuinely like her or whether they are simply too kind to leave. Whether they choose her because they want to or because they don't want to hurt her feelings.</p>
+
+        <p>And when she notices people treating her friends differently because of their association with her, the guilt becomes unbearable.</p>
+
+        <div class="questions">
+          <p>"Are they being judged because of me?"</p>
+          <p>"Would their lives be easier if they weren't my friends?"</p>
+          <p>"Am I bringing the very people I love into the pain I've spent years trying to escape?"</p>
+        </div>
+
+        <p>She never says any of these things aloud. Because she has always been the girl who smiles. The girl who says she's tired when she's actually breaking. The girl who blames a headache, a sleepless night, or exam stress when the truth is that her mind has been making scenarios since she can remember.</p>
+
+        <p>She never learned how to say, "I'm not okay."</p>
+
+        <p>Growing up, she learned that sadness was something to hide, that crying in front of others meant exposing a weakness. She never grew up with the kind of love where people say it's okay to not be okay, and she believed that showing people how much they had hurt her only gave them another topic to talk about.</p>
+
+        <p>So she became good at pretending. So good that even the people closest to her never questioned it. Her friends see someone who is happy. Her family sees someone stressed about exams. Her siblings see the same girl they've always known.</p>
+
+        <p>Nobody sees the girl lying awake at night, replaying conversations, wondering whether her words hurt someone or whether someone secretly judged her for what she did or what she said or whether someone secretly hates her. Nobody knows how many times she has cried silently over things she cannot explain. Nobody knows the sudden anxiety attacks she gets.</p>
+
+        <p>And nobody knows how scared she is. Not of someone or something — but she is scared of herself.</p>
+
+        <p>Not because she wants to hurt anyone, but because she has convinced herself that somehow even without meaning to, she always does.</p>
+
+        <p>She carries expectations that feel heavier every year. Expectations to succeed, to make people proud, to never disappoint. And somewhere between trying to become everything everyone wanted, she forgot how to ask herself what she actually needed.</p>
+
+        <p>Her love for her close ones is so genuine and deep that she can't even keep a count. She notices when their voices change, when their smiles seem forced, when something is wrong. She would rather carry her own sadness than let someone she loves feel responsible for it.</p>
+
+        <p>She doesn't want sympathy. She doesn't want people walking on eggshells around her. She doesn't want people to start acting different around her.</p>
+
+        <p>All she wants is to be loved without having to question why.</p>
+
+        <p>To have friends without wondering whether she deserves them.<br>
+        To make a mistake without fearing it will become another story told behind her back.<br>
+        To leave the past behind without having it dragged into every new beginning.</p>
+
+        <p>But how does someone learn to trust when the people who taught her what friendship meant were also the people who made her afraid of it?</p>
+
+        <p>How does someone believe she deserves happiness when she has spent most of her life believing she is the reason other people lose their happiness?</p>
+
+        <p>Sometimes, she wishes someone could look past the smile. Not to pity her. Not to fix her. Not to treat her differently. But just to understand that the girl who seems perfectly fine has spent so much time fighting battles against herself nobody knows exist.</p>
+
+        <p>She doesn't want to be someone's burden. She doesn't want to be someone's regret. She doesn't want to be the reason anyone gets hurt. She just wants, for once, to stop feeling like she has to apologise for existing.</p>
+
+        <p>And maybe the truth she has never allowed herself to believe is that not every argument was her fault. Not every tear was hers to prevent. Not every rumour was hers to correct. And that not every person who chose to leave was someone she failed to keep.</p>
+
+        <p>Maybe her friends who are with her now are with her because they genuinely see something worth loving.<br>
+        Maybe she doesn't have to earn every bit of kindness she receives.</p>
+
+        <p>But tonight, she still doesn't know how to believe any of that.</p>
+
+        <p>So she wipes her tears, puts her phone down, closes her eyes, and promises herself that tomorrow she will be fine.</p>
+
+        <p>Just like yesterday.<br>
+        Just like every day before.</p>
+
+        <p>And if someone asks why she looks tired, she'll smile and say, "I didn't sleep well."</p>
+
+        <p>Because saying "I spent the whole night wondering whether everyone I love would be happier without me" feels far more terrifying than another sleepless night.</p>
+      </div>
+
+      <div class="piece-footer">
+        <p class="piece-footer-author">sewn mouth</p>
+        <div class="piece-footer-meta">
+          <p>Loose Leaves</p>
+          <p>Fog & Thread, 2026</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <h2 class="footer-title">Fog & Thread</h2>
+      <p class="footer-tagline">when the fog confuses you, the thread guides you home</p>
+      <nav class="footer-nav">
+        <a href="threadbare.html">Threadbare</a>
+        <a href="loose-leaves.html">Loose Leaves</a>
+        <a href="light-grain.html">Light & Grain</a>
+        <a href="newsletter.html">Letters from the Fog</a>
+        <a href="about.html">Behind the Fog</a>
+      </nav>
+      <p class="footer-credit">founded by Nistha, 2026</p>
+    </div>
+  </footer>
+
+</body>
+</html>
