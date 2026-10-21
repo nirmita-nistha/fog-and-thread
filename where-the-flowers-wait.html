@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Where The Flowers Wait — Fog & Thread</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Upright:ital,wght@0,400;0,500;1,400;1,500&family=Caveat:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    body { padding-top: 56px; background: #080F0A; margin: 0; }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.42) contrast(1.1) saturate(0.7);
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(8,15,10,0.1) 0%, rgba(8,15,10,0.05) 40%, rgba(8,15,10,0.85) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 40px 32px;
+      max-width: 680px;
+    }
+    .hero-type {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #8A9E7A;
+      font-style: italic;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .hero-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(44px, 9vw, 88px);
+      color: #F7F2E8;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      text-shadow: 0 0 60px rgba(8,15,10,0.9), 0 2px 20px rgba(8,15,10,0.7);
+    }
+    .hero-author {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: #8A9E7A;
+      letter-spacing: 0.1em;
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+    }
+    .scroll-hint span {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #4A6A4A;
+      font-style: italic;
+    }
+    .scroll-line {
+      width: 0.5px;
+      height: 36px;
+      background: linear-gradient(to bottom, #4A6A4A, transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    .piece-body {
+      background: #080F0A;
+      padding: 60px 24px 100px;
+      position: relative;
+    }
+    .piece-body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 0.5px;
+      height: 60px;
+      background: linear-gradient(to bottom, #2A4A2A, transparent);
+    }
+    .piece-inner {
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .back-btn {
+      display: inline-block;
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4A6A4A;
+      font-style: italic;
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: #8A9E7A; }
+
+    .piece-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 52px;
+    }
+    .piece-divider-line { width: 48px; height: 0.5px; background: #2A4A2A; }
+    .piece-divider-ornament { color: #4A6A4A; font-size: 10px; }
+
+    .piece-text {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 18px;
+      font-style: italic;
+      line-height: 2;
+      color: #C4B49A;
+    }
+    .piece-text p { margin-bottom: 28px; }
+
+    .piece-text .lily-thoughts {
+      border-left: 0.5px solid #2A4A2A;
+      padding-left: 24px;
+      margin: 40px 0;
+    }
+    .piece-text .lily-thoughts p {
+      margin-bottom: 12px;
+      font-size: 17px;
+    }
+    .piece-text .lily-thoughts p:last-child { margin-bottom: 0; }
+
+    .piece-footer {
+      border-top: 0.5px dashed #1A2E1A;
+      padding-top: 32px;
+      margin-top: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .piece-footer-author {
+      font-family: 'Great Vibes', cursive;
+      font-size: 36px;
+      color: #8A9E7A;
+    }
+    .piece-footer-meta {
+      font-family: 'Cormorant Upright', serif;
+      font-size: 11px;
+      font-style: italic;
+      color: #2A4A2A;
+      letter-spacing: 0.1em;
+      text-align: right;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">Fog & Thread</a>
+    <div class="nav-links">
+      <a href="threadbare.html">Threadbare</a>
+      <a href="loose-leaves.html">Loose Leaves</a>
+      <a href="light-grain.html">Light & Grain</a>
+      <a href="newsletter.html">Letters from the Fog</a>
+      <a href="about.html">Behind the Fog</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <img class="hero-img" src="images/lily.jpeg" alt="Where The Flowers Wait" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-type">Short Story</span>
+      <h1 class="hero-title">Where The Flowers Wait</h1>
+      <p class="hero-author">by Samyuktha</p>
+    </div>
+    <div class="scroll-hint">
+      <span>read</span>
+      <div class="scroll-line"></div>
+    </div>
+  </div>
+
+  <div class="piece-body">
+    <div class="piece-inner">
+      <a href="loose-leaves.html" class="back-btn">← back to loose leaves</a>
+
+      <div class="piece-divider">
+        <div class="piece-divider-line"></div>
+        <span class="piece-divider-ornament">✦</span>
+        <div class="piece-divider-line"></div>
+      </div>
+
+      <div class="piece-text">
+        <p>One day, a girl wandered into a little flower nursery. Among the many flowers that filled the place, two caught her eye.</p>
+
+        <p>One was the lily of the valley, small, delicate, and graceful. The other was a snapdragon, tall and striking, with vibrant petals that demanded attention.</p>
+
+        <p>They were complete opposites, yet something about them drew her in. She loved them for their uniqueness and for the way each flower possessed beauty in its own way.</p>
+
+        <p>She couldn't decide which one to choose, so she brought both of them home.</p>
+
+        <p>She placed them on the windowsill where the sunlight gently touched. She watered them daily, talked to them, and shared her feelings with them and watched them grow.</p>
+
+        <p>She named the lily of the valley Lily and the snapdragon Kai.</p>
+
+        <p>One afternoon, as the girl watered Lily, Kai watched quietly from the other side of the windowsill. The girl spoke softly to Lily, sharing little pieces of her day, just as she always did. Kai wished, just once, that those words would be meant for her, too.</p>
+
+        <p>It wasn't that the girl had never spoken to Kai. She had. But that afternoon, Kai wished that she could be a part of their conversation.</p>
+
+        <p>By the following morning, Kai's petals had begun to droop. The girl noticed immediately. Worried, she sat beside Kai, talking for longer than she ever had before. She stayed until her petals seemed to lift again.</p>
+
+        <p>From the corner of the windowsill, Lily watched. She told herself that it was nothing — that Kai just needed extra care and that the girl was just kind.</p>
+
+        <p>The next morning after she watered Lily she rushed to water Kai. Lily wished the conversation had lasted a bit longer but she didn't complain. She didn't ask why.</p>
+
+        <p>She simply grew quieter.</p>
+
+        <p>As the days passed, the girl began talking more with Kai, sharing her thoughts and stories while Kai listened kindly.</p>
+
+        <p>Lily thought she had been forgotten, and slowly, she began to wither.</p>
+
+        <p>Noticing that Lily was withering, the girl began watering her more often and talking to her endlessly. Lily felt a little less alone.</p>
+
+        <p>And so the days passed in a quiet cycle.</p>
+
+        <p>Whenever Lily withered, the girl turned to Lily. Whenever Kai withered, she turned to Kai. She kept trying to make up for the attention one had missed by giving it more to the other.</p>
+
+        <p>But neither flower seemed able to flourish for long.</p>
+
+        <p>The girl couldn't help but feel overwhelmed by the situation she found herself in. She felt helpless and guilty, believing that both flowers were withering because of her.</p>
+
+        <p>One day, the girl spoke to a wise man about her situation.</p>
+
+        <p>"Choose one," he said.</p>
+
+        <p>"I can't, I love them both," she replied.</p>
+
+        <p>"You can't keep both when you know you're hurting them and yourself," he said.</p>
+
+        <p>The girl thought about his words for days and nights. Finally, she decided that no matter what, she would keep both and love them equally.</p>
+
+        <p>The next morning as she shared her decision with Lily, Lily quietly said, "Choose one. I will understand."</p>
+
+        <p>The girl was speechless.</p>
+
+        <p>"I can't, I love both of you," she replied.</p>
+
+        <p>"I know. But by holding on to both of us, you're hurting yourself the most and I know that you have to love someone deeply to let them go," Lily said.</p>
+
+        <p>The girl walked away in utter silence.</p>
+
+        <p>And so, Lily returned to her home in the nursery, where she had once happily waited for someone to pick her.</p>
+
+        <div class="lily-thoughts">
+          <p>Maybe I was never meant to be picked.</p>
+          <p>Maybe I was never meant to be loved.</p>
+          <p>And… I know it was always Kai. It was never just me….</p>
+          <p>I know it takes deep courage and love to let someone go.</p>
+          <p>She let me go…</p>
+        </div>
+
+        <p>There, among the many flowers, she waited once more.</p>
+      </div>
+
+      <div class="piece-footer">
+        <p class="piece-footer-author">Samyuktha</p>
+        <div class="piece-footer-meta">
+          <p>Loose Leaves</p>
+          <p>Fog & Thread, 2026</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <h2 class="footer-title">Fog & Thread</h2>
+      <p class="footer-tagline">when the fog confuses you, the thread guides you home</p>
+      <nav class="footer-nav">
+        <a href="threadbare.html">Threadbare</a>
+        <a href="loose-leaves.html">Loose Leaves</a>
+        <a href="light-grain.html">Light & Grain</a>
+        <a href="newsletter.html">Letters from the Fog</a>
+        <a href="about.html">Behind the Fog</a>
+      </nav>
+      <p class="footer-credit">founded by Nistha, 2026</p>
+    </div>
+  </footer>
+
+</body>
+</html>
